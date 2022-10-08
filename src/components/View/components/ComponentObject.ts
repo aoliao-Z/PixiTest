@@ -115,6 +115,8 @@ export class ComponentObject implements IComponent {
         const child = this.children.get(id)
         if (!child) throw `id: ${id}, 并不存在该实例中.`
         this.children.delete(id)
+        child.parent = null
+        this.instance.removeChild(child.instance) // ui层需要移除该元素
         if (destory) child.destory()
     }
 
@@ -132,4 +134,61 @@ export class ComponentObject implements IComponent {
             this.instance.addChild(component.instance)
         }
     }
+}
+
+if (import.meta.vitest) {
+    const { it, expect } = import.meta.vitest
+    it("ComponentObject_constructor", () => {
+        const base = new ComponentObject(0, 0, 20, 20) // id: 0
+        expect(base.x).toBe(0)
+        expect(base.y).toBe(0)
+        expect(base.width).toBe(20)
+        expect(base.height).toBe(20)
+        expect(base.id).toBe(0)
+    })
+
+    it("push", () => {
+        const base = new ComponentObject(0, 0, 20, 20) // id: 1
+        const child = new ComponentObject(5, 5, 10, 10) // id: 2
+        base.push(child)
+        expect(child.parent).toBe(base)
+        expect(base.children.get(2)).toBe(child)
+    })
+
+    it("remove", () => {
+        // 删除一个元素后判断该元素是否能够正确处理parent与children的关系
+        const base = new ComponentObject(0, 0, 20, 20) // id: 3
+        const child = new ComponentObject(5, 5, 10, 10) // id: 4
+        base.push(child)
+        expect(child.parent).toBe(base)
+        expect(base.children.get(4)).toBe(child)
+        base.remove(child)
+        expect(child.parent).toBeNull()
+        expect(base.children.get(4)).toBeUndefined()
+    })
+
+    it("destory", () => {
+        // 删除一个元素后判断该元素是否能够正确处理parent与children的关系
+        const base = new ComponentObject(0, 0, 20, 20) // id: 5
+        const child1 = new ComponentObject(5, 5, 10, 10) // id: 6
+        const child2 = new ComponentObject(5, 5, 10, 10) // id: 7
+        const child3 = new ComponentObject(5, 5, 10, 10) // id: 8
+        child1.push(child2, child3)
+        base.push(child1)
+        // 验证树结构是否正确
+        expect(child2.parent).toBe(child1)
+        expect(child3.parent).toBe(child1)
+        expect(child1.parent).toBe(base)
+        expect(child1.children.get(7)).toBe(child2)
+        expect(child1.children.get(8)).toBe(child3)
+        expect(child1.children.size).toBe(2)
+        expect(base.children.size).toBe(1)
+        expect(base.children.get(6)).toBe(child1)
+        base.destory() // 当根节点调用destory, 则其下所有子节点都应该被销毁
+        expect(child2.parent).toBeNull() // 子元素父节点被消除
+        expect(child3.parent).toBeNull() // 子元素父节点被消除
+        expect(child1.parent).toBeNull() // 子元素父节点被消除
+        expect(child1.children.size).toBe(0) // child1不再具有子元素
+        expect(base.children.size).toBe(0) // base也不再具有子元素
+    })
 }

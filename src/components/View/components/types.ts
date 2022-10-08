@@ -46,10 +46,18 @@ export interface IComponent {
     /** 向组件容器添加元素 */
     push(...components: IComponent[]): void
 
-    /** 通过id删除子元素 */
+    /**
+     * 通过id删除子元素
+     * @param id 组件id
+     * @param destory 是否彻底销毁, 一旦彻底销毁不可调用被销毁的元素, 否则出错
+     */
     remove(id: number, destory?: boolean): void
 
-    /** 通过组件自身删除子元素 */
+    /**
+     * 通过组件自身删除子元素
+     * @param component 组件实例
+     * @param destory 是否彻底销毁, 一旦彻底销毁不可调用被销毁的元素, 否则出错
+     */
     remove(component: IComponent, destory?: boolean): void
 
     /** 销毁自身, 会附带其子元素一同被销毁, 不应该使用被销毁后的容器*/
