@@ -65,12 +65,12 @@ export class ComponentObject implements IComponent {
         this.instance.height = height
     }
 
-    isVisible(): boolean {
+    public get visible(): boolean {
         return this.instance.visible
     }
 
-    visible(isVisible: boolean): void {
-        this.instance.visible = isVisible
+    public set visible(val: boolean) {
+        this.instance.visible = val
     }
 
     moveTo(x: number, y: number): void {
