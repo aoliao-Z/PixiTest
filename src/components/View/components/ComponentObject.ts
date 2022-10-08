@@ -148,14 +148,6 @@ export class ComponentObject implements IComponent {
         return root
     }
 }
-// let parent: null | IComponent = null
-// const clone = (component: IComponent) => {
-//     // 后序遍历
-//     // 如果到达最底层
-//     if (component.children.size === 0) {
-//         return new
-//     }
-// }
 
 if (import.meta.vitest) {
     const { it, expect } = import.meta.vitest
