@@ -134,7 +134,28 @@ export class ComponentObject implements IComponent {
             this.instance.addChild(component.instance)
         }
     }
+
+    // TODO: 递归克隆自身
+    clone() {
+        // 如果到达最底层
+        if (this.children.size === 0) {
+            return new ComponentObject(this.x, this.y, this.width, this.height)
+        }
+        const root = new ComponentObject(this.x, this.y, this.width, this.height)
+        for (const [id, child] of this.children) {
+            root.push(child.clone())
+        }
+        return root
+    }
 }
+// let parent: null | IComponent = null
+// const clone = (component: IComponent) => {
+//     // 后序遍历
+//     // 如果到达最底层
+//     if (component.children.size === 0) {
+//         return new
+//     }
+// }
 
 if (import.meta.vitest) {
     const { it, expect } = import.meta.vitest
@@ -190,5 +211,18 @@ if (import.meta.vitest) {
         expect(child1.parent).toBeNull() // 子元素父节点被消除
         expect(child1.children.size).toBe(0) // child1不再具有子元素
         expect(base.children.size).toBe(0) // base也不再具有子元素
+    })
+
+    it("clone", () => {
+        // 深拷贝组件测试
+        const base = new ComponentObject(0, 0, 20, 20) // id: 9
+        const child1 = new ComponentObject(5, 5, 10, 10) // id: 10
+        const child2 = new ComponentObject(5, 5, 10, 10) // id: 11
+        const child3 = new ComponentObject(5, 5, 10, 10) // id: 12
+        child1.push(child2, child3)
+        base.push(child1)
+        const otherBase = base.clone()
+        expect(otherBase.children.size).toBe(1)
+        expect(otherBase === base).toBeFalsy()
     })
 }

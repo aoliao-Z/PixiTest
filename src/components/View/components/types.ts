@@ -78,6 +78,9 @@ export interface IComponent {
 
     /** 销毁自身, 会附带其子元素一同被销毁, 不应该使用被销毁后的容器*/
     destory(): void
+
+    /** 递归的克隆自身 */
+    clone(): IComponent
 }
 
 export interface IButton extends IComponent {}
