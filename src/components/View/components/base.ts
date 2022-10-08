@@ -84,14 +84,28 @@ export class ComponentObject implements IComponent {
     }
 
     destory(): void {
-        if (this.parent) {
-            const isVaild = this.parent.children.has(this.id)
-            if (!isVaild) {
-                throw `预料之外的错误, 具有父元素时, 父元素的children属性应该具有该子元素. 当前id: ${this.id}`
+        // 使用bfs维护销毁后的children结构
+        const queue: IComponent[] = [this]
+        while (queue.length !== 0) {
+            const size = queue.length
+            for (let i = 0; i < size; i++) {
+                const node = queue.shift()!
+                if (node.parent) {
+                    const isVaild = node.parent.children.has(this.id)
+                    if (!isVaild) {
+                        throw `预料之外的错误: 具有父元素时, 父元素的children属性应该具有该子元素. 当前id: ${this.id}`
+                    }
+                    node.parent.children.delete(this.id)
+                    node.parent = null
+                }
+                for (const [_, child] of node.children) {
+                    queue.push(child)
+                    node.remove(child)
+                }
+                if (node.children.size !== 0) throw "bfs遍历错误, 存在未删除的元素"
             }
-            this.parent.children.delete(this.id)
         }
-        this.instance.destroy()
+        this.instance.destroy() // pixi内部会将所有加入instance容器的子元素递归删除
     }
 
     remove(id: number | IComponent, destory: boolean = false): void {
@@ -107,6 +121,12 @@ export class ComponentObject implements IComponent {
     /** 将组件加入container */
     push(...components: IComponent[]) {
         for (const component of components) {
+            if (component.parent !== null) {
+                throw `id: ${component.id}, 已存在父组件, 不可将其添加至其它组件`
+            }
+            if (this.parent === component) {
+                throw `引用错误: id: ${component.id} 与 id: ${this.id} 将造成parent属性相互引用`
+            }
             this.children.set(component.id, component)
             component.parent = this
             this.instance.addChild(component.instance)
