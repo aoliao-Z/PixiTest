@@ -30,7 +30,10 @@ export interface IComponent {
     instance: Container // pixi显示层基类
     parent: IComponent | null
     children: Map<number, IComponent>
-    box: IBaseRect
+    x: number
+    y: number
+    width: number
+    height: number
     isVisible(): boolean
     visible(isVisible: boolean): void
 

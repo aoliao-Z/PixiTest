@@ -5,13 +5,20 @@ import { IBaseRect, IComponent, Pos, Size } from "./types"
 export class ComponentObject implements IComponent {
     private static counter = 0
     public id: number // 实例的唯一编号
-    public box: IBaseRect
     public parent: IComponent | null
     public children: Map<number, IComponent>
     public instance: Container
+
+    private _x: number
+    private _y: number
+    private _width: number
+    private _height: number
     public constructor(x: number, y: number, width: number, height: number) {
         this.id = ComponentObject.counter++
-        this.box = { x, y, width, height }
+        this._x = x
+        this._y = y
+        this._width = width
+        this._height = height
         this.parent = null
         this.children = new Map()
         const container = new Container()
@@ -20,6 +27,42 @@ export class ComponentObject implements IComponent {
         container.width = width
         container.height = height
         this.instance = container
+    }
+
+    public get x() {
+        return this._x
+    }
+
+    public set x(x: number) {
+        this._x = x
+        this.instance.x = x
+    }
+
+    public get y() {
+        return this._y
+    }
+
+    public set y(y: number) {
+        this._y = y
+        this.instance.y = y
+    }
+
+    public get width() {
+        return this._width
+    }
+
+    public set width(width: number) {
+        this._width = width
+        this.instance.width = width
+    }
+
+    public get height() {
+        return this._height
+    }
+
+    public set height(height: number) {
+        this._height = height
+        this.instance.height = height
     }
 
     isVisible(): boolean {
