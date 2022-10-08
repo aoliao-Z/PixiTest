@@ -26,16 +26,32 @@ export type ComponentStyle = {
 }
 
 export interface IComponent {
-    id: number // 实例的id
-    instance: Container // pixi显示层基类
+    /** 实例id */
+    id: number
+
+    /** 组件对应的`pixi`容器 */
+    instance: Container
+
+    /** 父节点 */
     parent: IComponent | null
+
+    /** 实例的子组件 */
     children: Map<number, IComponent>
+
+    /** 实例的`x`坐标 */
     x: number
+
+    /** 实例的`y`坐标 */
     y: number
+
+    /** 实例的`width`坐标 */
     width: number
+
+    /** 实例的`height`坐标 */
     height: number
-    isVisible(): boolean
-    visible(isVisible: boolean): void
+
+    /** 是否可见 */
+    visible: boolean
 
     /** 移动到该位置 */
     moveTo(x: number, y: number): void
