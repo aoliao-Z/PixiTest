@@ -79,7 +79,7 @@ export interface IComponent {
     /** 销毁自身, 会附带其子元素一同被销毁, 不应该使用被销毁后的容器*/
     destory(): void
 
-    /** 递归的克隆自身 */
+    /** 递归的克隆自身, 每个组件需要单独实现该方法, 因为各个组件样式不同, 且pixi的DisplayObject无法直接克隆 */
     clone(): IComponent
 }
 

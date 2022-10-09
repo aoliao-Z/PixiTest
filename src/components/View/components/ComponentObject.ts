@@ -135,7 +135,7 @@ export class ComponentObject implements IComponent {
         }
     }
 
-    // TODO: 递归克隆自身
+    // 递归克隆自身, 每个组件需要单独实现该方法, 因为样式不同, 且pixi的DisplayObject无法直接克隆
     clone() {
         // 如果到达最底层
         if (this.children.size === 0) {
