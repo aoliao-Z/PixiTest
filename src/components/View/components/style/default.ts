@@ -2,6 +2,6 @@ import { RectStyle } from "./types"
 
 export const DefaultRectStyle: RectStyle = {
     backGroundColor: "#ffffff",
-    border: 100,
+    border: 1,
     borderColor: "#666666",
 }
