@@ -46,9 +46,9 @@ export class Rect extends ComponentObject {
     public clone(): Rect {
         // 如果到达最底层
         if (this.children.size === 0) {
-            return new Rect(this.x, this.y, this.width, this.height, this.style)
+            return new Rect(this.x, this.y, this.width, this.height, { ...this.style })
         }
-        const root = new Rect(this.x, this.y, this.width, this.height, this.style)
+        const root = new Rect(this.x, this.y, this.width, this.height, { ...this.style })
         for (const [id, child] of this.children) {
             root.push(child.clone())
         }
