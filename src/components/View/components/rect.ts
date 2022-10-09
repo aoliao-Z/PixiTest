@@ -39,7 +39,7 @@ export class Rect extends ComponentObject {
                 this.y + width / 2,
                 this.width - width,
                 this.height - width,
-                this.style.radius ?? 0
+                this.style.radius
             )
     }
 
