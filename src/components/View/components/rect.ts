@@ -1,5 +1,9 @@
 import { Graphics } from "pixi.js"
 import { ComponentObject } from "./ComponentObject"
+export type RectStyle = {
+    backGroundColor: string
+    border: string
+}
 
 export class Rect extends ComponentObject {
     private __rect: Graphics
