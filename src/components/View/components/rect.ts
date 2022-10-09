@@ -6,7 +6,7 @@ import { RectStyle } from "./style/types"
 import { parseBorder, parseColor } from "./style/utils"
 
 export class Rect extends ComponentObject {
-    private __rect: Graphics
+    protected __rect: Graphics
     public style: RectStyle
     constructor(x: number, y: number, width: number, height: number, style?: RectStyle) {
         super(x, y, width, height)
@@ -30,16 +30,16 @@ export class Rect extends ComponentObject {
         const width = this.style.border
         if (this.style.borderColor) {
             const color = new Color(this.style.borderColor).rgbNumber()
-
             graphic.lineStyle({ width, color })
         }
         return graphic
             .beginFill(new Color(this.style.backGroundColor).rgbNumber())
-            .drawRect(
+            .drawRoundedRect(
                 this.x + width / 2,
                 this.y + width / 2,
                 this.width - width,
-                this.height - width
+                this.height - width,
+                this.style.radius ?? 0
             )
     }
 
