@@ -17,6 +17,7 @@ onMounted(() => {
     clone.y = 100
     app.stage.addChild(rect.instance, clone.instance, btn.instance)
     dom.value.appendChild(app.view)
+    setTimeout(() => (btn.text = "ok"), 1000)
 })
 </script>
 

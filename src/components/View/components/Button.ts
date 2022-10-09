@@ -5,10 +5,15 @@ import { ButtonStyle } from "./style/types"
 import { copyConfig } from "./style/utils"
 // 可定义xy 也可不定义
 export class Button extends Rect {
-    public text: string
     public style: ButtonStyle
     protected __icon?: string
+
+    /** 图标实例 */
     protected __sprite?: Sprite
+
+    /** 文字实例 */
+    protected textInstance: Text
+
     constructor(
         x: number,
         y: number,
@@ -19,17 +24,27 @@ export class Button extends Rect {
     ) {
         const _style = copyConfig(style, DefaultButtonStyle)
         super(x, y, width, height, _style)
-        this.text = "hello hello"
         this.style = _style
         if (this.__icon) this.__sprite = Sprite.from(this.__icon)
+        this.textInstance = new Text("id: " + this.id.toString())
+        this.__rect.addChild(this.textInstance)
+        this.__palceText()
+    }
+
+    public get text() {
+        return this.textInstance.text
+    }
+
+    public set text(s: string) {
+        this.textInstance.text = s
         this.__palceText()
     }
 
     /** 对模块实例进行摆放 */
     private __place() {
-        const text = new Text(this.text)
-        let x = this.x + this.style.border / 2 // 定位到无边框位置
-        let y = this.y + this.style.border / 2
+        // const text = new Text(this.s)
+        // let x = this.x + this.style.border / 2 // 定位到无边框位置
+        // let y = this.y + this.style.border / 2
     }
 
     private __palceText() {
@@ -37,13 +52,12 @@ export class Button extends Rect {
             fontSize: this.style.fontSize,
             fill: this.style.color,
         })
-        const text = new Text(this.text, textStyle)
+        this.textInstance.style = textStyle
         let x = this.x + this.style.border / 2 // 定位到无边框位置
         let y = this.y + this.style.border / 2
-        const dx = (this.width - text.width) / 2
-        const dy = (this.height - text.height) / 2
-        text.x = x + dx
-        text.y = y + dy
-        this.__rect.addChild(text)
+        const dx = (this.width - this.textInstance.width) / 2
+        const dy = (this.height - this.textInstance.height) / 2
+        this.textInstance.x = x + dx
+        this.textInstance.y = y + dy
     }
 }
