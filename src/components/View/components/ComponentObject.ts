@@ -137,7 +137,7 @@ export class ComponentObject implements IComponent {
 
     // 递归克隆自身, 每个组件需要单独实现该方法, 因为样式不同, 且pixi的DisplayObject无法直接克隆
     clone() {
-        throw "不可用调用基类的clone, 需要自行实现"
+        if (!import.meta.vitest) throw "不可用调用基类的clone, 需要自行实现"
         // 如果到达最底层
         if (this.children.size === 0) {
             return new ComponentObject(this.x, this.y, this.width, this.height)
