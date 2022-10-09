@@ -1,10 +1,13 @@
-export type BorderStyle = [number, number, number, number]
+import Color from "color"
+import { BorderStyle } from "./types"
+
 /**
  * 解析`border`各个方向的线条宽度
  * @param cssBorder border宽度字符串
  * @returns [上, 右, 下, 左]边框长度
  */
-export const parseBorder = (cssBorder: string): BorderStyle => {
+export const parseBorder = (cssBorder: string | BorderStyle): BorderStyle => {
+    if (typeof cssBorder !== "string") return cssBorder.map(v => v) as BorderStyle
     // 1. 分隔字符串
     const widths = cssBorder.split(" ").map(width => parseFloat(width))
     const size = widths.length
@@ -44,4 +47,10 @@ if (import.meta.vitest) {
         const source = parseBorder(border)
         expect(source).toEqual(target)
     })
+}
+
+export const parseColor = (color: string | Color | undefined) => {
+    if (typeof color === "string") return new Color(color)
+    if (typeof color === "undefined") return undefined
+    return color
 }
