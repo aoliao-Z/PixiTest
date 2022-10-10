@@ -74,11 +74,15 @@ export class ComponentObject implements IComponent {
     }
 
     moveTo(x: number, y: number): void {
+        this._x = x
+        this._y = y
         this.instance.x = x
         this.instance.y = y
     }
 
     moveBy(offsetX: number, offsetY: number): void {
+        this._x += offsetX
+        this._y += offsetY
         this.instance.x += offsetX
         this.instance.y += offsetY
     }
