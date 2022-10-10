@@ -8,11 +8,11 @@ export const DefaultRectStyle: RectStyle = {
 }
 
 export const DefaultButtonStyle: ButtonStyle = {
-    backGroundColor: "#ffffff",
+    backGroundColor: "#3F4969",
     border: 0,
     borderColor: "#666666",
     radius: 5,
     color: "#000000",
-    fontSize: 12,
+    fontSize: 20,
     align: "center",
 }
