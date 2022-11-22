@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue"
 import { Application } from "pixi.js"
 import { BaseRect } from "./components/base"
 import { Rect } from "./components/rect"
-import { Button } from "./components/Button"
+import { Button } from "./components/AoliaoButton"
 const dom = ref()
 onMounted(() => {
     const app = new Application({
@@ -11,7 +11,7 @@ onMounted(() => {
         resolution: 1,
     })
     const rect = new Rect(0, 0, 200, 200)
-    const btn = new Button(200, 200, 100, 50)
+    const btn = new Button(100, 100, 50, 50)
     const clone = rect.clone()
     clone.x = 100
     clone.y = 100
