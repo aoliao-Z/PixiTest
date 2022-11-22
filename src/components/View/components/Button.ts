@@ -14,6 +14,8 @@ export class Button extends Rect {
     /** 文字实例 */
     protected textInstance: Text
 
+    protected clicks: ((...args: any[]) => void)[]
+
     constructor(
         x: number,
         y: number,
@@ -29,6 +31,10 @@ export class Button extends Rect {
         this.textInstance = new Text("id: " + this.id.toString())
         this.__rect.addChild(this.textInstance)
         this.__palceText()
+        this.clicks = []
+        this.instance.on("click", (...args) => {
+            this.clicks.forEach(fn => fn(...args))
+        })
     }
 
     public get text() {
@@ -47,6 +53,7 @@ export class Button extends Rect {
         // let y = this.y + this.style.border / 2
     }
 
+    /** 文字居中 */
     private __palceText() {
         const textStyle = new TextStyle({
             fontSize: this.style.fontSize,
@@ -59,5 +66,9 @@ export class Button extends Rect {
         const dy = (this.height - this.textInstance.height) / 2
         this.textInstance.x = x + dx
         this.textInstance.y = y + dy
+    }
+
+    public onClick(fn: (...args: any[]) => void) {
+        this.clicks.push(fn)
     }
 }
